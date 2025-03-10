@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>My To-Do</title>
+        <link rel="icon" href="./src/assets/favicon_white.svg" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./index.css" />
+    </head>
+    <body>
+        <div class="alert" id="alert">
+            <!-- <div class="alert-box">
+                <div class="alert-message">Task cannot be empty!</div>
+                <button class="ok-button">OK</button>
+            </div> -->
+        </div>
+        <div class="confirm" id="confirm">
+            <!-- <div class="confirm-box">
+                <div class="confirm-message">Are you sure?</div>
+                <button class="ok-button">OK</button>
+                <button class="cancel-button">Cancel</button>
+            </div> -->
+        </div>
+        <div class="container" id="container">
+            <div class="rows">
+                <div class="title">My To-Do</div>
+                <div class="row-header">
+                    <div class="input-item">
+                        <input
+                            class="input-value-2"
+                            id="input-value-2"
+                            style="color: gray"
+                            type="text"
+                            placeholder="Add a new task..."
+                            value=""
+                        />
+                        <button class="add-input-button" id="add-input-button">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="total-items">
+                        <div
+                            class="total-items-count"
+                            id="total-items-count"
+                            style="font-weight: 600"
+                        ></div>
+                    </div>
+                </div>
+                <div id="row-body-items"></div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const MAX_TASKS = 5;
+        // const rowItems = [
+        //     { name: "Buy groceries", done: false },
+        //     { name: "Clean the house", done: false },
+        //     { name: "Finish the report", done: false },
+        //     { name: "Go to the gym", done: false },
+        //     { name: "Read a book", done: false },
+        //     { name: "Go for a walk", done: false },
+        // ];
+
+        const rowItems = [];
+
+        function updateTaskCount() {
+            const taskCountElement =
+                document.getElementById("total-items-count");
+            taskCountElement.textContent = `${rowItems.length} item(s) to-do`;
+        }
+
+        function createElement(tag, className, text = "") {
+            const element = document.createElement(tag);
+            if (className) element.className = className;
+            if (text) element.textContent = text;
+            return element;
+        }
+
+        function loadItems() {
+            const rows = document.getElementById("row-body-items");
+            rows.innerHTML = "";
+
+            if (rowItems.length === 0) {
+                const itemBlank = createElement("div", "item-blank");
+                const img = createElement("img");
+                img.src = "./src/assets/hand-drawn-no-data-illustration-b.png";
+                itemBlank.appendChild(img);
+                rows.appendChild(itemBlank);
+                updateTaskCount();
+            } else {
+                rowItems.forEach((item, index) => {
+                    const rowBody = createElement("div", "row-body");
+                    const rowItem = createElement("div", "row-item", item.name);
+
+                    const removeButton = createElement(
+                        "button",
+                        "remove-button"
+                    );
+                    removeButton.id = "remove-button";
+                    removeButton.appendChild(
+                        createElement("i", "fa-solid fa-trash")
+                    );
+
+                    const doneButton = createElement("button", "done-button");
+                    doneButton.id = "done-button";
+                    doneButton.appendChild(
+                        createElement("i", "fa-solid fa-check")
+                    );
+
+                    if (item.done) {
+                        rowItem.style.textDecoration = "line-through";
+                        rowItem.style.color = "gray";
+                        doneButton.style.display = "none";
+                    }
+
+                    doneButton.addEventListener("click", () => {
+                        showConfirm(
+                            `Are you sure want to mark "${item.name}" as done?`
+                        ).then((result) => {
+                            if (result) {
+                                rowItems[index].done = true;
+                                loadItems();
+                            }
+                        });
+                    });
+
+                    removeButton.addEventListener("click", () => {
+                        showConfirm(
+                            `Are you sure want to delete "${item.name}"?`
+                        ).then((result) => {
+                            if (result) {
+                                rowItems.splice(index, 1);
+                                loadItems();
+                                updateTaskCount();
+                            }
+                        });
+                    });
+
+                    rowBody.appendChild(rowItem);
+                    rowBody.appendChild(removeButton);
+                    rowBody.appendChild(doneButton);
+                    rows.appendChild(rowBody);
+                });
+
+                updateTaskCount();
+            }
+        }
+
+        function addItem() {
+            const input = document.getElementById("input-value-2");
+            const inputValue = input.value.trim();
+
+            if (!inputValue) {
+                showAlert("Task cannot be empty!");
+                return;
+            }
+
+            if (inputValue.length > 50) {
+                showAlert("Task is too long!");
+                return;
+            }
+
+            if (rowItems.length >= MAX_TASKS) {
+                showAlert(`Maximum only ${MAX_TASKS} tasks allowed!`);
+                return;
+            }
+
+            rowItems.push({
+                name: inputValue,
+                done: false,
+            });
+            input.value = "";
+            loadItems();
+        }
+
+        function disableButtons() {
+            const buttons = document.querySelectorAll("button");
+            const icons = document.querySelectorAll("i");
+            const addButton = document.querySelector(".add-input-button");
+            if (buttons && icons && addButton) {
+                addButton.disabled = true;
+
+                buttons.forEach((button) => {
+                    button.disabled = true;
+                    button.style.cursor = "auto";
+                });
+
+                icons.forEach((icon) => {
+                    icon.style.cursor = "auto";
+                });
+            }
+
+            const actionButtons = document.querySelectorAll(
+                ".done-button, .remove-button"
+            );
+            actionButtons.forEach((button) => {
+                button.disabled = true;
+            });
+
+            buttons.forEach((button) => {
+                button.classList.add("disabled");
+            });
+
+            icons.forEach((icon) => {
+                icon.classList.add("disabled");
+            });
+        }
+
+        function enableButtons() {
+            const buttons = document.querySelectorAll("button");
+            const icons = document.querySelectorAll("i");
+            const addButton = document.querySelector(".add-input-button");
+            if (buttons && icons && addButton) {
+                addButton.disabled = false;
+
+                buttons.forEach((button) => {
+                    button.disabled = false;
+                    button.style.cursor = "pointer";
+                });
+
+                icons.forEach((icon) => {
+                    icon.style.cursor = "pointer";
+                });
+            }
+
+            const actionButtons = document.querySelectorAll(
+                ".done-button, .remove-button"
+            );
+            actionButtons.forEach((button) => {
+                button.disabled = false;
+            });
+
+            buttons.forEach((button) => {
+                button.classList.remove("disabled");
+            });
+
+            icons.forEach((icon) => {
+                icon.classList.remove("disabled");
+            });
+        }
+
+        function showConfirm(message) {
+            return new Promise((resolve) => {
+                disableButtons();
+
+                const container = document.getElementById("container");
+                container.style.filter = "blur(8px)";
+
+                const confirmOverlay = createElement("div", "confirm-overlay");
+                const confirmBox = createElement("div", "confirm-box");
+                const confirmMessage = createElement(
+                    "div",
+                    "confirm-message",
+                    message
+                );
+
+                const okButton = createElement("button", "ok-button", "OK");
+                const cancelButton = createElement(
+                    "button",
+                    "cancel-button",
+                    "Cancel"
+                );
+
+                okButton.addEventListener("click", () => {
+                    document.body.removeChild(confirmOverlay);
+                    container.style.filter = "none";
+                    enableButtons();
+                    resolve(true);
+                });
+
+                cancelButton.addEventListener("click", () => {
+                    document.body.removeChild(confirmOverlay);
+                    container.style.filter = "none";
+                    enableButtons();
+                    resolve(false);
+                });
+
+                confirmBox.append(confirmMessage, okButton, cancelButton);
+                confirmOverlay.appendChild(confirmBox);
+                document.body.appendChild(confirmOverlay);
+            });
+        }
+
+        function showAlert(message) {
+            disableButtons();
+
+            const container = document.getElementById("container");
+            container.style.filter = "blur(8px)";
+
+            const alert = document.getElementById("alert");
+            alert.style.display = "flex";
+
+            const alertBox = createElement("div", "alert-box");
+            const alertMessage = createElement("div", "alert-message", message);
+            const okButton = createElement("button", "ok-button", "OK");
+
+            okButton.addEventListener("click", () => {
+                alert.style.display = "none";
+                container.style.filter = "none";
+                alert.innerHTML = "";
+                enableButtons();
+            });
+
+            alertBox.append(alertMessage, okButton);
+            alert.appendChild(alertBox);
+        }
+
+        document
+            .getElementById("add-input-button")
+            .addEventListener("click", addItem);
+        window.onload = function () {
+            loadItems();
+        };
+    </script>
+</html>

@@ -1,0 +1,287 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+    --han-purple: #441fee;
+    --raisin-black: #2c2626;
+}
+
+* {
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.5;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--raisin-black);
+}
+
+button, i {
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    filter: none;
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: max-content;
+    padding: calc(4.6875rem / 1.5) calc(1.5625rem / 1.5);
+    background-color: var(--raisin-black);
+    border: 2px solid var(--han-purple);
+    border-radius: calc(2.5rem / 1.5);
+}
+
+.alert-box,
+.confirm-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: calc(42.5rem / 1.5);
+    height: calc(13.75rem / 1.5);
+    background-color: var(--raisin-black);
+    border: 1px solid var(--han-purple);
+    border-radius: calc(0.9375rem / 1.5);
+    font-size: 0.875rem;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.alert-message,
+.confirm-message {
+    padding-left: calc(1.875rem / 1.5);
+    padding-bottom: calc(3.75rem / 1.5);
+    color: white;
+}
+
+.alert-box .ok-button {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    transform: translate(-125%, -141.67%);
+    width: calc(6.25rem / 1.5);
+    height: calc(3.75rem / 1.5);
+    background-color: var(--han-purple);
+    cursor: pointer;
+    border: 1px solid var(--han-purple);
+    border-radius: calc(0.625rem / 1.5);
+    color: white;
+}
+
+.confirm-box .ok-button {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    transform: translate(-245%, -141.67%);
+    width: calc(6.25rem / 1.5);
+    height: calc(3.75rem / 1.5);
+    background-color: var(--han-purple);
+    cursor: pointer;
+    border: 1px solid var(--han-purple);
+    border-radius: calc(0.625rem / 1.5);
+    color: white;
+}
+
+.confirm-box .cancel-button {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    transform: translate(-125%, -141.67%);
+    width: calc(6.25rem / 1.5);
+    height: calc(3.75rem / 1.5);
+    background-color: var(--raisin-black);
+    cursor: pointer;
+    border: 1px solid var(--han-purple);
+    border-radius: calc(0.625rem / 1.5);
+    color: var(--han-purple);
+}
+
+.title {
+    position: absolute;
+    top: calc(-2.125rem / 2);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--raisin-black);
+    border: 10px solid var(--raisin-black);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+}
+
+.row-header {
+    /* background-color: aqua; */
+    display: flex;
+    gap: calc(3.4375rem / 1.5);
+    margin-bottom: calc(4.6875rem / 1.5);
+}
+
+.input-item {
+    position: relative;
+    width: calc(28.125rem / 1.5);
+    height: calc(3.75rem / 1.5);
+    background-color: white;
+    border: 1px solid var(--han-purple);
+    border-radius: calc(0.9375rem / 1.5);
+}
+
+.total-items {
+    position: relative;
+    width: calc(11.875rem / 1.5);
+    height: calc(3.75rem / 1.5);
+    background-color: var(--raisin-black);
+}
+
+.add-input-button {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(-125%, -50%);
+    width: calc(2.5rem / 1.5);
+    height: calc(2.5rem / 1.5);
+    background-color: var(--han-purple);
+    border-radius: calc(0.625rem / 1.5);
+}
+
+.add-input-button i {
+    color: white;
+}
+
+#row-body-items {
+    display: flex;
+    flex-direction: column;
+    gap: calc(0.625rem / 1.5);
+}
+
+.row-body {
+    position: relative;
+    width: calc(46.875rem / 1.5);
+    height: calc(3.75rem / 1.5);
+    background-color: var(--raisin-black);
+    border: 1px solid white;
+    border-radius: calc(0.9375rem / 1.5);
+}
+
+.input-value-2 {
+    all: unset;
+    position: absolute;
+    width: calc(
+        (28.125rem / 1.5) - (2.5rem / 1.5) - (0.9375rem / 1.5) - (0.9375rem * 2)
+    );
+    top: 50%;
+    transform: translate(0%, -50%);
+    padding-left: 0.9375rem;
+    font-size: 0.875rem;
+    color: white;
+}
+
+.item-blank {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(46.875rem / 1.5);
+    height: calc(((3.75rem / 1.5) * 5) + ((0.625rem / 1.5) * 4) + (10px / 1.5));
+}
+
+.item-blank img {
+    width: 16rem;
+    height: auto;
+    filter: grayscale(1);
+}
+
+.row-item,
+.total-items-count {
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%);
+    padding-left: 0.9375rem;
+    font-size: 0.875rem;
+    color: white;
+}
+
+.done-button {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(-250%, -50%);
+    width: calc(2.5rem / 1.5);
+    height: calc(2.5rem / 1.5);
+    background-color: var(--han-purple);
+    border-radius: calc(0.625rem / 1.5);
+}
+
+.remove-button {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(-125%, -50%);
+    width: calc(2.5rem / 1.5);
+    height: calc(2.5rem / 1.5);
+    background-color: #fe6f47;
+    border-radius: calc(0.625rem / 1.5);
+}
+
+.done-button i,
+.remove-button i {
+    color: white;
+}
+
+.add-input-button:hover,
+.done-button:hover,
+.remove-button:hover {
+    box-shadow: 0px 0px 4px 1px rgba(200, 200, 200, 0.7);
+}
+
+.add-input-button i:hover,
+.done-button i:hover,
+.remove-button i:hover {
+    color: var(--raisin-black);
+}
+
+button.disabled:hover,
+button.disabled i:hover {
+    box-shadow: none !important;
+    color: inherit !important;
+}
+
+button.disabled {
+    pointer-events: none; /* Disables all interaction */
+}
